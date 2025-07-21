@@ -1,0 +1,36 @@
+### Authorization Service API Tests
+### Базовый URL
+@baseUrl = http://localhost:8080/api
+
+### 1. Регистрация пользователя с ролью GUEST
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+  "login": "guest_user",
+  "email": "guest@example.com",
+  "password": "password123",
+  "role": ["guest"]
+}
+
+### 2. Регистрация пользователя с ролью PREMIUM_USER
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+  "login": "premium_user",
+  "email": "premium@example.com",
+  "password": "password123",
+  "role": ["premium_user"]
+}
+
+### 3. Регистрация пользователя с ролью ADMIN
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+  "login": "admin_user",
+  "email": "admin@example.com",
+  "password": "password123",
+  "role": ["admin"]
+}
