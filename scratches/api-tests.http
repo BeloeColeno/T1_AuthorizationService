@@ -1,0 +1,101 @@
+### Authorization Service API Tests
+### Базовый URL
+@baseUrl = http://localhost:8080/api
+
+### Переменные для токенов (заполняются после авторизации)
+### ВАЖНО: Скопируйте СВЕЖИЕ accessToken из ответов /login!
+@guestToken =
+@premiumToken =
+@adminToken =
+
+### 1. Авторизация пользователя GUEST
+# @name loginGuest
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "login": "guest_user",
+  "password": "password123"
+}
+
+### 2. Авторизация пользователя PREMIUM
+# @name loginPremium
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "login": "premium_user",
+  "password": "password123"
+}
+
+### 3. Авторизация пользователя ADMIN
+# @name loginAdmin
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "login": "admin_user",
+  "password": "password123"
+}
+
+### 4. Проверка доступа к гостевой зоне (GUEST TOKEN)
+GET {{baseUrl}}/access/guest
+Authorization: Bearer {{guestToken}}
+
+### 5. Проверка доступа к премиум зоне (PREMIUM TOKEN)
+GET {{baseUrl}}/access/premium
+Authorization: Bearer {{premiumToken}}
+
+### 6. Проверка доступа к админ зоне (ADMIN TOKEN)
+GET {{baseUrl}}/access/admin
+Authorization: Bearer {{adminToken}}
+
+### 7. Проверка всех доступов пользователя (GUEST)
+GET {{baseUrl}}/access/check
+Authorization: Bearer {{guestToken}}
+
+### 8. Проверка всех доступов пользователя (PREMIUM)
+GET {{baseUrl}}/access/check
+Authorization: Bearer {{premiumToken}}
+
+### 9. Проверка всех доступов пользователя (ADMIN)
+GET {{baseUrl}}/access/check
+Authorization: Bearer {{adminToken}}
+
+### 10. Отзыв токена (GUEST)
+POST {{baseUrl}}/revoke-token
+Authorization: Bearer {{guestToken}}
+
+### 11. Отзыв токена (PREMIUM)
+POST {{baseUrl}}/revoke-token
+Authorization: Bearer {{premiumToken}}
+
+### 12. Отзыв токена (ADMIN)
+POST {{baseUrl}}/revoke-token
+Authorization: Bearer {{adminToken}}
+
+### 13. Тест премиум доступа с гостевым токеном (должен вернуть 403)
+GET {{baseUrl}}/access/premium
+Authorization: Bearer {{guestToken}}
+
+### 14. Тест админ доступа с премиум токеном (должен вернуть 403)
+GET {{baseUrl}}/access/admin
+Authorization: Bearer {{premiumToken}}
+
+### ИНСТРУКЦИЯ ПО ИСПОЛЬЗОВАНИЮ:
+### 1. Выполните запросы в файле api-register.http для регистрации пользователей (только один раз)
+### 2. Выполните запросы 1-3 для авторизации и получения СВЕЖИХ токенов
+### 3. НЕМЕДЛЕННО скопируйте "accessToken" из ответов и вставьте в переменные выше
+### 4. Используйте токены для тестирования запросов 4-14
+###
+### ⚠️ ВАЖНЫЕ ПРАВИЛА:
+### - Токены действуют 30 минут
+### - При каждом новом /login все старые токены ОТЗЫВАЮТСЯ
+### - Не делайте повторный логин пока тестируете - токены станут недействительными
+### - Если получаете 401 ошибку - получите новые токены через /login
+###
+### 🔄 Алгоритм тестирования:
+### 1. Зарегистрируйте всех пользователей
+### 2. Авторизуйте ВСЕХ пользователей подряд
+### 3. Скопируйте ВСЕ accessToken в переменные
+### 4. Тестируйте доступы - теперь у вас есть 30 минут!
