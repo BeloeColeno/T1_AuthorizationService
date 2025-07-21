@@ -9,14 +9,23 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show-sql: true
+    show-sql: false
+    open-in-view: false
 
 app:
   jwt:
     secret: bXlTZWNyZXRLZXlGb3JKV1RUb2tlbkdlbmVyYXRpb25BbmRWYWxpZGF0aW9uUHVycG9zZXM=
-    expiration: 3600000  # 1 ??? ? ?????????????
-    refresh-expiration: 86400000  # 24 ???? ? ?????????????
+    expiration: 1800000  # 30 минут
+    refresh-expiration: 86400000  # 24 часа
+    init:
+      roles: true
+
+logging:
+  charset:
+    console: UTF-8
+  level:
+    root: WARN
+    com.java.petrovsm.authorizationservice: INFO
+    org.springframework.security: WARN
+    org.hibernate: WARN
+    org.springframework.web: WARN
